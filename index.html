@@ -6,7 +6,7 @@
 <title>Truck Center ABC: levantamento de processos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   box-sizing: border-box;
@@ -163,6 +163,38 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
 .path { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
 .path li { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; padding: 8px 12px; background: var(--surface-2); border-left: 3px solid var(--ink); border-radius: 6px; margin: 0; }
 .path li span { color: var(--ink-2); font-size: 14px; }
+
+.prog { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 0 26px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; align-items: start; }
+.pcol { padding: 16px 26px 16px; min-width: 0; }
+.pcol + .pcol { border-left: 1px solid var(--line); }
+@media (max-width: 760px) { .prog { grid-template-columns: 1fr; } .pcol + .pcol { border-left: 0; border-top: 1px solid var(--line); } .pcol { padding: 14px 20px; } }
+.prow { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.plabel { font-size: 13px; font-weight: 500; letter-spacing: .01em; color: var(--ink-2); }
+.ppct { font-size: 12.5px; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.pfig { margin: 4px 0 10px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.big { font-size: 30px; font-weight: 300; line-height: 1.1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.of { font-size: 13.5px; font-weight: 400; color: var(--ink-2); }
+.track { display: flex; height: 5px; border-radius: 999px; overflow: hidden; background: var(--line); }
+.fill { position: relative; height: 100%; width: 0; overflow: hidden; transition: width 1.4s cubic-bezier(.2, .8, .2, 1); }
+.fill-red { background: linear-gradient(90deg, #B71C26, #E5484D); box-shadow: 0 0 8px rgba(229, 72, 77, .45); border-radius: 999px; }
+.fill-green { background: linear-gradient(90deg, #23863F, #3DB45E); box-shadow: 0 0 8px rgba(61, 180, 94, .4); }
+.fill-amber { background: linear-gradient(90deg, #DDA000, #F3C14E); box-shadow: 0 0 8px rgba(243, 193, 78, .4); }
+.fill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .42) 50%, transparent 70%); transform: translateX(-100%); animation: shine 3.6s ease-in-out infinite; }
+@keyframes shine { 0% { transform: translateX(-100%); } 55%, 100% { transform: translateX(100%); } }
+.pnote { margin: 9px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin: 0 5px 0 0; vertical-align: 0; }
+.dot ~ .dot { margin-left: 12px; }
+.dot-green { background: #3DB45E; } .dot-amber { background: #F3C14E; } .dot-gray { background: var(--line); box-shadow: inset 0 0 0 1px var(--ink-2); }
+.missbtn { font: inherit; font-size: 12.5px; cursor: pointer; border: 0; background: transparent; color: var(--ink); padding: 0; margin-left: 14px; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.missbtn:hover { text-decoration-color: var(--ink); }
+.miss { grid-column: 1 / -1; padding: 14px 26px 18px; border-top: 1px solid var(--line); }
+.miss .mh { font-size: 13px; font-weight: 500; color: var(--ink-2); margin: 12px 0 8px; }
+.miss .mh:first-child { margin-top: 0; }
+.mrow { display: flex; flex-wrap: wrap; gap: 6px; }
+.mchip { font: inherit; font-size: 13px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 4px 11px; border-radius: 999px; }
+.mchip:hover { border-color: var(--ink); }
+.mchip small { color: var(--ink-2); font-size: 12px; margin-left: 5px; }
+.miss .pnote { margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -179,12 +211,26 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     <p class="lead">Este painel reúne o que já foi observado em cada setor, o que ainda precisa ser confirmado com as equipes e as decisões em aberto. O levantamento está em andamento: setores sem informação aparecem como "A levantar".</p>
     <div class="chips">
       <span class="chip">Atualizado em 02/10/2026</span>
-      <span class="chip" id="countChip"></span>
-      <span class="chip" id="colabChip"></span>
       <span class="chip warn">Conteúdo preliminar, ainda não validado com as equipes</span>
       <button type="button" class="chip toggle" id="namesBtn" aria-pressed="true">Nomes dos colaboradores: visíveis</button>
     </div>
   </div>
+
+  <section class="prog" aria-label="Andamento do levantamento">
+    <div class="pcol">
+      <div class="prow"><span class="plabel">Colaboradores levantados</span><span class="ppct" id="colabPct"></span></div>
+      <div class="pfig"><span class="big" id="colabBig"></span><span class="of" id="colabOf"></span></div>
+      <div class="track" id="colabTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Colaboradores levantados"><div class="fill fill-red" id="colabFill"></div></div>
+      <p class="pnote" id="colabSub"></p>
+    </div>
+    <div class="pcol">
+      <div class="prow"><span class="plabel">Setores levantados</span><span class="ppct" id="secPct"></span></div>
+      <div class="pfig"><span class="big" id="secBig"></span><span class="of" id="secOf"></span></div>
+      <div class="track" id="secTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Setores levantados"><div class="fill fill-green" id="secVal"></div><div class="fill fill-amber" id="secPre"></div></div>
+      <p class="pnote"><span class="dot dot-green"></span>Validado<span class="dot dot-amber"></span>Pré-análise<span class="dot dot-gray"></span>A levantar<button type="button" class="missbtn" id="missBtn" aria-expanded="false" aria-controls="missing"></button></p>
+    </div>
+    <div class="miss" id="missing" hidden></div>
+  </section>
 
   <div class="layout">
     <div class="mapcard" id="mapcard">
@@ -320,11 +366,53 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   function count(st) { var c = 0; SECTORS.forEach(function (s) { if (s.status === st) c++; }); return c; }
   function matches(s) { return state.filter === 'todos' || s.status === state.filter; }
 
+
+  var TOTAL_COLAB = 75;
+
+  function setBar(el, pct) { requestAnimationFrame(function () { requestAnimationFrame(function () { el.style.width = pct + '%'; }); }); }
+
+  function renderProgress() {
+    var reg = 0, indiv = 0;
+    SECTORS.forEach(function (s) {
+      if (s.colab) reg += s.colab.n;
+      (s.pessoas || []).forEach(function (p) { if (p.nivel === 'ok') indiv++; });
+    });
+    var cp = Math.min(100, reg / TOTAL_COLAB * 100);
+    var cShow = reg > 0 ? Math.max(cp, 3) : 0;
+    $('colabPct').textContent = Math.round(cp) + '%';
+    $('colabTrack').setAttribute('aria-valuenow', String(Math.round(cp)));
+    $('colabBig').textContent = reg;
+    $('colabOf').textContent = 'de ' + TOTAL_COLAB + (reg > TOTAL_COLAB ? ' (acima do total do RH)' : '');
+    $('colabSub').textContent = 'Total informado pelo RH. ' + indiv + ' com análise individual.';
+    setBar($('colabFill'), cShow);
+
+    var tot = SECTORS.length, pre = count('pre'), val = count('validado'), lev = pre + val;
+    var sp = Math.round(lev / tot * 100);
+    $('secPct').textContent = sp + '%';
+    $('secTrack').setAttribute('aria-valuenow', String(sp));
+    $('secBig').textContent = lev;
+    $('secOf').textContent = 'de ' + tot + ', com ' + val + ' validados';
+    setBar($('secVal'), val / tot * 100);
+    setBar($('secPre'), pre / tot * 100);
+
+    var notStarted = SECTORS.filter(function (s) { return s.status === 'levantar'; });
+    var partial = SECTORS.filter(function (s) { return s.status !== 'levantar' && (s.pessoas || []).some(function (p) { return p.nivel !== 'ok'; }); });
+    var h = '<p class="mh">Ainda não levantados (' + notStarted.length + ')</p><div class="mrow">' + notStarted.map(function (s) {
+      return '<button type="button" class="mchip" data-id="' + s.id + '">' + s.n + '. ' + s.name + '</button>';
+    }).join('') + '</div>';
+    if (partial.length) {
+      h += '<p class="mh">Em andamento, com pessoas por detalhar</p><div class="mrow">' + partial.map(function (s) {
+        var n = (s.pessoas || []).filter(function (p) { return p.nivel !== 'ok'; }).length;
+        return '<button type="button" class="mchip" data-id="' + s.id + '">' + s.n + '. ' + s.name + '<small>' + n + (n === 1 ? ' pessoa' : ' pessoas') + '</small></button>';
+      }).join('') + '</div>';
+    }
+    h += '<p class="pnote">Esta lista usa os 14 setores da planta. Se existir algum setor fora do mapa, ele ainda pode ser incluído.</p>';
+    $('missing').innerHTML = h;
+    var open = $('missBtn').getAttribute('aria-expanded') === 'true';
+    $('missBtn').textContent = open ? 'Ocultar o que falta' : 'Ver o que falta (' + notStarted.length + ')';
+  }
+
   function renderHeader() {
-    var done = SECTORS.length - count('levantar');
-    $('countChip').textContent = done + ' de ' + SECTORS.length + ' setores com pré-análise';
-    var tc = 0, sc2 = 0; SECTORS.forEach(function (s) { if (s.colab) { tc += s.colab.n; sc2++; } });
-    $('colabChip').textContent = 'Colaboradores levantados: ' + tc + ' (' + sc2 + ' de ' + SECTORS.length + ' setores)';
     var defs = [['todos', 'Todos (' + SECTORS.length + ')'], ['levantar', 'A levantar (' + count('levantar') + ')'], ['pre', 'Pré-análise (' + count('pre') + ')'], ['validado', 'Validado (' + count('validado') + ')']];
     $('filters').innerHTML = defs.map(function (d) {
       return '<button type="button" data-filter="' + d[0] + '" aria-pressed="' + (state.filter === d[0]) + '">' + d[1] + '</button>';
@@ -496,6 +584,10 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     if (pin) { select(pin.getAttribute('data-id'), true); return; }
     var it = e.target.closest('.item');
     if (it) { select(it.getAttribute('data-id'), false); return; }
+    var mb = e.target.closest('#missBtn');
+    if (mb) { var o = mb.getAttribute('aria-expanded') === 'true'; mb.setAttribute('aria-expanded', String(!o)); $('missing').hidden = o; renderProgress(); return; }
+    var mc = e.target.closest('.mchip');
+    if (mc) { select(mc.getAttribute('data-id'), true); return; }
     var tb = e.target.closest('.tabs button');
     if (tb) { state.tab = tb.getAttribute('data-tab'); renderFicha(); return; }
     var nb = e.target.closest('#namesBtn');
@@ -507,7 +599,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   });
 
   window.addEventListener('resize', function () { spread(); });
-  renderHeader(); renderPins(); renderList(); renderFicha(); setZoom(1);
+  renderHeader(); renderProgress(); renderPins(); renderList(); renderFicha(); setZoom(1);
   setTimeout(spread, 400);
 })();
 </script>
