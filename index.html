@@ -164,7 +164,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
 .path li { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; padding: 8px 12px; background: var(--surface-2); border-left: 3px solid var(--ink); border-radius: 6px; margin: 0; }
 .path li span { color: var(--ink-2); font-size: 14px; }
 
-.prog { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 0 26px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; align-items: start; }
+.prog { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 0 26px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
 .pcol { padding: 16px 26px 16px; min-width: 0; }
 .pcol + .pcol { border-left: 1px solid var(--line); }
 @media (max-width: 760px) { .prog { grid-template-columns: 1fr; } .pcol + .pcol { border-left: 0; border-top: 1px solid var(--line); } .pcol { padding: 14px 20px; } }
@@ -190,6 +190,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
 .dot-green { background: #3DB45E; } .dot-amber { background: #F3C14E; } .dot-gray { background: var(--line); box-shadow: inset 0 0 0 1px var(--ink-2); }
 .missbtn { font: inherit; font-size: 12.5px; cursor: pointer; border: 0; background: transparent; color: var(--ink); padding: 0; margin-left: 14px; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
 .missbtn:hover { text-decoration-color: var(--ink); }
+#whoBtn { display: block; margin: 6px 0 0; }
 .miss { grid-column: 1 / -1; padding: 14px 26px 18px; border-top: 1px solid var(--line); }
 .miss .mh { font-size: 13px; font-weight: 500; color: var(--ink-2); margin: 12px 0 8px; }
 .miss .mh:first-child { margin-top: 0; }
@@ -224,7 +225,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       <div class="prow"><span class="plabel">Colaboradores levantados</span><span class="ppct" id="colabPct"></span></div>
       <div class="pfig"><span class="big" id="colabBig"></span><span class="of" id="colabOf"></span></div>
       <div class="track" id="colabTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Colaboradores levantados"><div class="fill fill-red" id="colabFill"></div></div>
-      <p class="pnote" id="colabSub"></p>
+      <p class="pnote"><span id="colabSub"></span><button type="button" class="missbtn" id="whoBtn" aria-expanded="false" aria-controls="who"></button></p>
     </div>
     <div class="pcol">
       <div class="prow"><span class="plabel">Setores levantados</span><span class="ppct" id="secPct"></span></div>
@@ -232,6 +233,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       <div class="track" id="secTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Setores levantados"><div class="fill fill-green" id="secVal"></div><div class="fill fill-amber" id="secPre"></div></div>
       <p class="pnote"><span class="dot dot-green"></span>Validado<span class="dot dot-amber"></span>Pré-análise<span class="dot dot-gray"></span>A levantar<button type="button" class="missbtn" id="missBtn" aria-expanded="false" aria-controls="missing"></button></p>
     </div>
+    <div class="miss" id="who" hidden></div>
     <div class="miss" id="missing" hidden></div>
   </section>
 
@@ -285,9 +287,9 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     { id: 'portaria', n: 1, name: 'Portaria', group: 'Frente', status: 'pre', date: '01/10/2026', colab: { n: 1, nota: '{gih}' },
       faz: ['Registra a placa e libera o acesso', 'Faz o checklist de entrada do veículo pelo aplicativo (fotos e documento do motorista), que toma tempo', 'Abre a OS, que segue para a equipe de atendimento'],
       pessoas: [
-        { key: 'gih', funcao: 'Portaria (cargo a confirmar)', resp: 'a confirmar', nivel: 'detalhar',
-          faz: ['Registra a placa e libera o acesso', 'Faz o checklist de entrada do veículo pelo aplicativo', 'Abre a OS, que segue para o atendimento'],
-          obs: ['É o único colaborador informado para a Portaria. Confirmar se é um por turno ou um no total.'] }
+        { key: 'gih', funcao: 'Portaria (cargo a confirmar)', resp: 'a confirmar', nivel: 'ok',
+          faz: ['Registra a placa e libera o acesso', 'Faz o checklist de entrada do veículo pelo aplicativo, com fotos e documento do motorista', 'Abre a OS, que segue para o atendimento'],
+          obs: ['Levantamento concluído, com pontos em aberto: cargo, a quem responde e se é um colaborador por turno ou um no total.', 'Concentra controle de acesso, checklist de entrada e abertura de OS.', 'Observações sobre o processo, não uma avaliação da pessoa.'] }
       ],
       fora: [
         { t: 'Checklist de entrada do veículo', m: 'Procedimento por aplicativo, com fotos e registro do documento do motorista. Toma tempo e disputa a atenção com o controle de acesso. Proposta: passar para um auxiliar administrativo na sala do Comercial.' },
@@ -386,7 +388,8 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     $('colabTrack').setAttribute('aria-valuenow', String(Math.round(cp)));
     $('colabBig').textContent = reg;
     $('colabOf').textContent = 'de ' + TOTAL_COLAB + (reg > TOTAL_COLAB ? ' (acima do total do RH)' : '');
-    $('colabSub').textContent = 'Total informado pelo RH. ' + indiv + ' com análise individual.';
+    $('colabSub').textContent = reg + ' registrados, ' + indiv + ' com análise individual. Total de ' + TOTAL_COLAB + ' informado pelo RH.';
+    renderWho();
     setBar($('colabFill'), cShow);
 
     var tot = SECTORS.length, pre = count('pre'), val = count('validado'), lev = pre + val;
@@ -414,6 +417,26 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     $('missing').innerHTML = h;
     var open = $('missBtn').getAttribute('aria-expanded') === 'true';
     $('missBtn').textContent = open ? 'Ocultar o que falta' : 'Ver o que falta (' + notStarted.length + ')';
+  }
+
+  function renderWho() {
+    var withA = [], pending = [], listed = 0, reg = 0;
+    SECTORS.forEach(function (s) {
+      if (s.colab) reg += s.colab.n;
+      (s.pessoas || []).forEach(function (p) {
+        listed++;
+        (p.nivel === 'ok' ? withA : pending).push({ s: s, p: p });
+      });
+    });
+    function chip(x) {
+      return '<button type="button" class="mchip wchip" data-id="' + x.s.id + '">' + tx(nm(x.p.key)) + '<small>' + x.s.name + '</small></button>';
+    }
+    var h = '<p class="mh">Com análise individual (' + withA.length + ')</p><div class="mrow">' + (withA.length ? withA.map(chip).join('') : '<span class="pnote" style="margin:0">Ninguém ainda.</span>') + '</div>';
+    h += '<p class="mh">Registrados, análise individual pendente (' + pending.length + ')</p><div class="mrow">' + (pending.length ? pending.map(chip).join('') : '<span class="pnote" style="margin:0">Ninguém pendente.</span>') + '</div>';
+    if (reg > listed) h += '<p class="pnote">Mais ' + (reg - listed) + (reg - listed === 1 ? ' colaborador' : ' colaboradores') + ' contado' + (reg - listed === 1 ? '' : 's') + ' em setores sem nomes registrados.</p>';
+    $('who').innerHTML = h;
+    var open = $('whoBtn').getAttribute('aria-expanded') === 'true';
+    $('whoBtn').textContent = open ? 'Ocultar quem são' : 'Ver quem são';
   }
 
   function renderHeader() {
@@ -590,12 +613,16 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     if (it) { select(it.getAttribute('data-id'), false); return; }
     var mb = e.target.closest('#missBtn');
     if (mb) { var o = mb.getAttribute('aria-expanded') === 'true'; mb.setAttribute('aria-expanded', String(!o)); $('missing').hidden = o; renderProgress(); return; }
+    var wb = e.target.closest('#whoBtn');
+    if (wb) { var wo = wb.getAttribute('aria-expanded') === 'true'; wb.setAttribute('aria-expanded', String(!wo)); $('who').hidden = wo; renderWho(); return; }
+    var wc = e.target.closest('.wchip');
+    if (wc) { select(wc.getAttribute('data-id'), true); state.tab = 'colab'; renderFicha(); return; }
     var mc = e.target.closest('.mchip');
     if (mc) { select(mc.getAttribute('data-id'), true); return; }
     var tb = e.target.closest('.tabs button');
     if (tb) { state.tab = tb.getAttribute('data-tab'); renderFicha(); return; }
     var nb = e.target.closest('#namesBtn');
-    if (nb) { state.names = !state.names; nb.setAttribute('aria-pressed', String(state.names)); nb.textContent = 'Nomes dos colaboradores: ' + (state.names ? 'visíveis' : 'ocultos'); renderFicha(); return; }
+    if (nb) { state.names = !state.names; nb.setAttribute('aria-pressed', String(state.names)); nb.textContent = 'Nomes dos colaboradores: ' + (state.names ? 'visíveis' : 'ocultos'); renderFicha(); renderWho(); return; }
     var fl = e.target.closest('#filters button');
     if (fl) { state.filter = fl.getAttribute('data-filter'); renderHeader(); renderPins(); renderList(); return; }
     var zb = e.target.closest('.zoom button');
