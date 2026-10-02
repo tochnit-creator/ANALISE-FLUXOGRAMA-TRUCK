@@ -145,6 +145,24 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   .mapcard { position: static; --h: 74vh; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+.chip.toggle { font: inherit; font-size: 13.5px; cursor: pointer; }
+.chip.toggle[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 16px 0 0; overflow-x: auto; }
+.tabs button { font: inherit; font-size: 14.5px; background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 14px; cursor: pointer; color: var(--ink-2); white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--red); }
+.person { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 10px; margin: 12px 0; background: var(--surface-2); }
+.p-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.person h4 { font-family: var(--cond); font-size: 21px; margin: 0; }
+.person ul { margin: 4px 0 6px; padding-left: 18px; } .person li { margin: 4px 0; }
+.sub-h { font-weight: 600; margin: 10px 0 0; font-size: 14.5px; }
+.person .f-sub { margin: 4px 0 0; }
+.lv-ok { background: var(--green-soft); color: var(--green); }
+.lv-parcial { background: var(--amber-soft); color: var(--amber); }
+.lv-det { background: var(--surface); color: var(--ink-2); border: 1px solid var(--line); }
+.path { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.path li { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; flex-wrap: wrap; padding: 8px 12px; background: var(--surface-2); border-left: 3px solid var(--ink); border-radius: 6px; margin: 0; }
+.path li span { color: var(--ink-2); font-size: 14px; }
 </style>
 </head>
 <body>
@@ -160,9 +178,11 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     <h1>Levantamento de processos por setor</h1>
     <p class="lead">Este painel reúne o que já foi observado em cada setor, o que ainda precisa ser confirmado com as equipes e as decisões em aberto. O levantamento está em andamento: setores sem informação aparecem como "A levantar".</p>
     <div class="chips">
-      <span class="chip">Pré-análise de 01/10/2026</span>
+      <span class="chip">Atualizado em 02/10/2026</span>
       <span class="chip" id="countChip"></span>
+      <span class="chip" id="colabChip"></span>
       <span class="chip warn">Conteúdo preliminar, ainda não validado com as equipes</span>
+      <button type="button" class="chip toggle" id="namesBtn" aria-pressed="true">Nomes dos colaboradores: visíveis</button>
     </div>
   </div>
 
@@ -196,7 +216,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
 </main>
 
 <footer>
-  Conteúdo preliminar, baseado em observação inicial. As posições no mapa são aproximadas e servem para localizar cada setor.
+  Conteúdo preliminar, baseado em observação inicial. As posições no mapa são aproximadas e servem para localizar cada setor. Use o botão de nomes para ocultar os colaboradores ao apresentar.
 </footer>
 
 <script>
@@ -213,11 +233,16 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   ];
 
   var SECTORS = [
-    { id: 'portaria', n: 1, name: 'Portaria', group: 'Frente', status: 'pre', date: '01/10/2026',
+    { id: 'portaria', n: 1, name: 'Portaria', group: 'Frente', status: 'pre', date: '01/10/2026', colab: { n: 1, nota: '{gih}' },
       faz: ['Registra a placa e libera o acesso', 'Faz o checklist de entrada do veículo pelo aplicativo (fotos e documento do motorista), que toma tempo', 'Abre a OS, que segue para a equipe de atendimento'],
+      pessoas: [
+        { key: 'gih', funcao: 'Portaria (cargo a confirmar)', resp: 'a confirmar', nivel: 'detalhar',
+          faz: ['Registra a placa e libera o acesso', 'Faz o checklist de entrada do veículo pelo aplicativo', 'Abre a OS, que segue para o atendimento'],
+          obs: ['É o único colaborador informado para a Portaria. Confirmar se é um por turno ou um no total.'] }
+      ],
       fora: [
-        { t: 'Checklist de entrada do veículo', m: 'Procedimento por aplicativo, com fotos e registro do documento do motorista. Toma tempo e disputa a atenção com o controle de acesso. Responsável a definir.' },
-        { t: 'Abertura da OS', m: 'Define o serviço e alimenta faturamento e produtividade. Responsável a definir.' }
+        { t: 'Checklist de entrada do veículo', m: 'Procedimento por aplicativo, com fotos e registro do documento do motorista. Toma tempo e disputa a atenção com o controle de acesso. Proposta: passar para um auxiliar administrativo na sala do Comercial.' },
+        { t: 'Abertura da OS', m: 'Define o serviço e alimenta faturamento e produtividade. Proposta: passar para um auxiliar administrativo na sala do Comercial.' }
       ],
       atencao: [
         { t: 'Fila e atenção dividida na entrada', g: 'alta', d: 'O checklist pelo aplicativo toma tempo. Enquanto ele é feito, quem chega espera e o controle de acesso perde atenção.' },
@@ -225,11 +250,48 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
         { t: 'Sem câmeras na guarita e na entrada', g: 'alta', d: 'Observado em campo. Sem imagens, fica mais difícil acompanhar acidentes, disputas e outras ocorrências na entrada.' }
       ],
       mais: 'Também a verificar: retrabalho no atendimento, responsabilidade misturada, dependência de turno e onde ficam guardadas as fotos e os documentos dos motoristas.',
-      deveria: ['Portaria fica com o controle de acesso: placa, motorista, horário e motivo', 'Libera ou barra a entrada e avisa o atendimento (sugestão)', 'Checklist de entrada e abertura da OS passam para quem for definido', 'Câmeras na guarita e na entrada para reforçar o monitoramento (sugestão)'],
-      aberto: ['Definir quem assume o checklist de entrada e a abertura de OS', 'Avaliar câmeras na guarita e na entrada'],
-      validar: ['Por que a Portaria faz isso hoje? Falta de gente em algum horário ou hábito antigo?', 'O atendimento está presente em quais horários?', 'Quanto tempo leva o checklist pelo aplicativo e quantos caminhões chegam por dia?', 'Quanto tempo o caminhão espera na entrada, em média?', 'Quantas OS voltam corrigidas pelo atendimento?', 'Há câmeras em outros pontos da empresa? Onde ficam as fotos e os documentos do motorista e quem tem acesso?']
+      deveria: ['Portaria fica com o controle de acesso: placa, motorista, horário e motivo', 'Libera ou barra a entrada e avisa o atendimento (sugestão)', 'Checklist de entrada e abertura da OS passam para um auxiliar administrativo na sala do Comercial (proposta do analista, a validar)', 'Câmeras na guarita e na entrada para reforçar o monitoramento (sugestão)'],
+      aberto: ['Validar a proposta de auxiliar administrativo na sala do Comercial para o checklist e a OS', 'Avaliar câmeras na guarita e na entrada'],
+      validar: ['Por que a Portaria faz isso hoje? Falta de gente em algum horário ou hábito antigo?', 'É um colaborador por turno ou um no total? Qual o horário de funcionamento da Portaria?', 'O atendimento está presente em quais horários?', 'Quanto tempo leva o checklist pelo aplicativo e quantos caminhões chegam por dia?', 'Quanto tempo o caminhão espera na entrada, em média?', 'Quantas OS voltam corrigidas pelo atendimento?', 'Há câmeras em outros pontos da empresa? Onde ficam as fotos e os documentos do motorista e quem tem acesso?']
     },
-    { id: 'comercial', n: 2, name: 'Comercial', group: 'Frente', status: 'levantar' },
+    { id: 'comercial', n: 2, name: 'Comercial', group: 'Frente', status: 'pre', date: '02/10/2026', colab: { n: 3, nota: '{fabi}, {julio} e {tati}' },
+      faz: [
+        'Atende os clientes (inclusive pelo WhatsApp) e passa o diagnóstico',
+        'Quando o cliente quer fechar ou negociar, a atividade é repassada a {julio}',
+        'Mantém uma planilha de controle comercial, não padronizada, com status das OS e faturamento da equipe'
+      ],
+      caminho: [
+        { t: 'Cliente entra em contato ou chega', q: '{fabi} atende' },
+        { t: 'Diagnóstico informado ao cliente', q: '{fabi}' },
+        { t: 'Cliente quer fechar ou negociar', q: '{fabi} repassa' },
+        { t: 'Negociação e fechamento', q: '{julio} assume (motivo a entender)' }
+      ],
+      pessoas: [
+        { key: 'fabi', funcao: 'Atendimento ao cliente', resp: 'a confirmar', nivel: 'parcial',
+          faz: ['Atende os clientes, inclusive pelo WhatsApp', 'Passa o diagnóstico ao cliente', 'Quando o cliente quer fechar ou negociar, repassa a atividade a {julio}', 'Mantém a planilha de controle comercial (status das OS e faturamento da equipe), manual e sem padrão'],
+          obs: ['Hoje não negocia. Entender o motivo: alçada, margem, política ou hábito.', 'Hipótese: não ter poder de negociação pode limitar o atendimento e a operação.', 'A planilha é manual e pode ser automatizada. Falta ver as colunas e quem a usa.', 'Observações sobre o processo, não uma avaliação da pessoa.'] },
+        { key: 'julio', funcao: 'Negociação e fechamento (a confirmar)', resp: 'a confirmar', nivel: 'detalhar',
+          faz: ['Recebe os clientes que querem fechar ou negociar (papel a confirmar)'],
+          obs: ['Análise individual será feita depois.', 'Confirmar se é a pessoa responsável pela negociação na empresa.'] },
+        { key: 'tati', funcao: 'Supervisão', resp: 'a confirmar', nivel: 'detalhar',
+          faz: ['Supervisora do setor Comercial (a detalhar)'],
+          obs: ['Análise individual será feita depois.'] }
+      ],
+      atencao: [
+        { t: 'Negociação fica fora do atendimento', g: 'media', d: 'Quem atende e passa o diagnóstico ({fabi}) repassa a negociação a {julio}. O motivo ainda não foi entendido. Hipótese: não poder negociar pode limitar {fabi} e a operação, e atrasar o retorno ao cliente.' },
+        { t: 'Planilha manual e sem padrão', g: 'alta', d: 'O status das OS e o faturamento da equipe dependem de uma planilha feita à mão. Há risco de erro e de atraso, e o dado fica fora do sistema. É candidata à automação.' },
+        { t: 'Sem apoio na sala do Comercial', g: 'media', d: 'A abertura de OS e o checklist de entrada ficam com a Portaria, e não há uma pessoa de apoio que cubra ausências e gargalos do Comercial e do Pit stop. Hipótese a validar.' }
+      ],
+      mais: 'Também a verificar: a carga de trabalho do atendimento em dias de movimento e como a OS chega ao Comercial vinda da Portaria.',
+      deveria: [
+        'Entender e, se fizer sentido, definir uma alçada de negociação para o atendimento, com escalonamento por valor (sugestão)',
+        'Auxiliar administrativo na sala do Comercial para abrir OS e fazer o checklist de entrada, tirando essa função da Portaria',
+        'Esse auxiliar também apoia {fabi}, {julio} e o Pit stop, e serve de backup para ausências e gargalos futuros (a validar)',
+        'Planilha de controle comercial passa para o acompanhamento digital, automatizado'
+      ],
+      aberto: ['Entender por que a negociação fica com {julio} e não com {fabi}', 'Ver a planilha de controle: colunas, quem preenche e para quem é usada', 'Validar a proposta de auxiliar administrativo (perfil, quantidade e custo)', 'Confirmar como o auxiliar faria o checklist, que é feito no veículo, com fotos', 'Fazer a análise individual de {julio} e {tati}'],
+      validar: ['Por que o fechamento fica com {julio}? Política de margem, alçada ou hábito?', 'Quanto tempo o cliente espera entre o diagnóstico e o retorno de quem negocia?', 'Quais colunas tem a planilha, quem a alimenta e com que frequência? O dono a utiliza?', 'Quem cobre {julio} e {fabi} nas ausências? Já houve negociação parada por isso?', 'Quantas OS por dia passam pelo Comercial?']
+    },
     { id: 'pitstop', n: 3, name: 'Pit stop', group: 'Frente', status: 'levantar' },
     { id: 'almoxarifado', n: 4, name: 'Almoxarifado', group: 'Apoio', status: 'levantar',
       duvida: 'No mapa há uma ligação entre o Almoxarifado e um ponto marcado como "Compras?". Entender como os dois se relacionam.' },
@@ -248,7 +310,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   ];
   var GROUPS = ['Frente', 'Apoio', 'Administração', 'Produção'];
 
-  var state = { sel: 'portaria', filter: 'todos', zoom: 1 };
+  var state = { sel: 'portaria', filter: 'todos', zoom: 1, tab: 'geral', names: true };
   function $(id) { return document.getElementById(id); }
   function byId(id) { for (var i = 0; i < SECTORS.length; i++) if (SECTORS[i].id === id) return SECTORS[i]; return null; }
   function count(st) { var c = 0; SECTORS.forEach(function (s) { if (s.status === st) c++; }); return c; }
@@ -257,6 +319,8 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   function renderHeader() {
     var done = SECTORS.length - count('levantar');
     $('countChip').textContent = done + ' de ' + SECTORS.length + ' setores com pré-análise';
+    var tc = 0, sc2 = 0; SECTORS.forEach(function (s) { if (s.colab) { tc += s.colab.n; sc2++; } });
+    $('colabChip').textContent = 'Colaboradores levantados: ' + tc + ' (' + sc2 + ' de ' + SECTORS.length + ' setores)';
     var defs = [['todos', 'Todos (' + SECTORS.length + ')'], ['levantar', 'A levantar (' + count('levantar') + ')'], ['pre', 'Pré-análise (' + count('pre') + ')'], ['validado', 'Validado (' + count('validado') + ')']];
     $('filters').innerHTML = defs.map(function (d) {
       return '<button type="button" data-filter="' + d[0] + '" aria-pressed="' + (state.filter === d[0]) + '">' + d[1] + '</button>';
@@ -322,11 +386,63 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     $('groups').innerHTML = html;
   }
 
-  function li(arr) { return '<ul>' + arr.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>'; }
+  var PEOPLE = {
+    fabi: { nome: 'Fabi', label: 'a atendente' },
+    julio: { nome: 'Julio', label: 'o negociador' },
+    tati: { nome: 'Tati', label: 'a supervisora' },
+    gih: { nome: 'Gih', label: 'a pessoa da portaria' }
+  };
+  function nm(k) { return state.names ? PEOPLE[k].nome : PEOPLE[k].label; }
+  function tx(str, keep) {
+    var o = String(str).replace(/\{(\w+)\}/g, function (m, k) { return PEOPLE[k] ? nm(k) : m; });
+    return keep ? o : o.charAt(0).toUpperCase() + o.slice(1);
+  }
+  function li(arr) { return '<ul>' + arr.map(function (x) { return '<li>' + tx(x) + '</li>'; }).join('') + '</ul>'; }
+
+  var LV = { ok: ['lv-ok', 'Levantamento feito'], parcial: ['lv-parcial', 'Levantamento parcial'], detalhar: ['lv-det', 'A detalhar'] };
+
+  function tabGeral(s) {
+    var h = '<div class="blk"><h3>O que faz hoje</h3>' + li(s.faz) + '</div>';
+    if (s.caminho) {
+      h += '<div class="blk"><h3>Caminho do cliente</h3><ol class="path">' + s.caminho.map(function (c) {
+        return '<li><b>' + tx(c.t) + '</b><span>' + tx(c.q) + '</span></li>';
+      }).join('') + '</ol></div>';
+    }
+    if (s.fora && s.fora.length) {
+      h += '<div class="blk"><h3>O que parece fora do lugar</h3><ul class="out">' + s.fora.map(function (f) { return '<li><b>' + tx(f.t) + '</b>' + tx(f.m) + '</li>'; }).join('') + '</ul></div>';
+    }
+    h += '<div class="blk"><h3>Como deveria ser</h3><p class="more" style="margin:0 0 6px">Proposta inicial do analista, a validar.</p>' + li(s.deveria) + '</div>';
+    return h;
+  }
+
+  function tabColab(s) {
+    var n = s.colab ? s.colab.n : 0;
+    var done = (s.pessoas || []).filter(function (p) { return p.nivel === 'ok'; }).length;
+    var h = '<div class="blk"><p class="more" style="margin:0">' + n + ' colaborador' + (n === 1 ? '' : 'es') + ' no setor, ' + done + ' com levantamento feito.</p>';
+    (s.pessoas || []).forEach(function (p) {
+      var title = p.key ? tx(nm(p.key)) : p.nome;
+      var lv = LV[p.nivel];
+      h += '<div class="person"><div class="p-head"><h4>' + title + '</h4><span class="pill ' + lv[0] + '">' + lv[1] + '</span></div>' +
+        '<p class="f-sub"><b>Função:</b> ' + p.funcao + '</p>' +
+        '<p class="f-sub"><b>Responde a:</b> ' + tx(p.resp, true) + '</p>' +
+        '<div class="sub-h">O que faz</div>' + li(p.faz) +
+        '<div class="sub-h">Observações</div>' + li(p.obs) + '</div>';
+    });
+    return h + '</div>';
+  }
+
+  function tabObs(s) {
+    var h = '<div class="blk"><h3>Pontos de atenção</h3><p class="more" style="margin:0 0 10px">Supostos gargalos e problemas, a partir do que foi observado em ' + s.date + '. Ainda não validados.</p><div class="att">' + s.atencao.map(function (a) {
+      return '<div><div class="top"><b>' + tx(a.t) + '</b><span class="pill p-' + a.g + '">Gravidade ' + (a.g === 'alta' ? 'alta' : 'média') + '</span></div><p>' + tx(a.d) + '</p></div>';
+    }).join('') + '</div>' + (s.mais ? '<p class="more">' + tx(s.mais) + '</p>' : '') + '</div>';
+    if (s.aberto && s.aberto.length) h += '<div class="blk"><h3>Em aberto</h3><div class="open">' + li(s.aberto) + '</div></div>';
+    h += '<div class="blk"><details class="val"><summary>O que validar</summary>' + li(s.validar) + '</details></div>';
+    return h;
+  }
 
   function renderFicha() {
     var s = byId(state.sel);
-    var h = '<div class="f-head"><div><h2>' + s.n + '. ' + (s.full || s.name) + '</h2><p class="f-sub">' + s.group + '</p></div>' +
+    var h = '<div class="f-head"><div><h2>' + s.n + '. ' + (s.full || s.name) + '</h2><p class="f-sub">' + s.group + '</p><p class="f-sub"><b>Colaboradores:</b> ' + (s.colab ? s.colab.n + (s.colab.nota ? ' (' + tx(s.colab.nota, true) + ')' : '') : 'a levantar') + '</p></div>' +
       '<span class="pill st-' + s.status + '">' + ST[s.status] + '</span></div>';
     if (s.status === 'levantar') {
       h += '<div class="blk"><div class="note">Este setor ainda não foi levantado. Nada foi concluído sobre ele.</div></div>';
@@ -334,16 +450,11 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       h += '<div class="blk"><h3>Roteiro da primeira conversa</h3>' + li(ROTEIRO) + '</div>';
       h += '<div class="f-foot">Próximo passo: conversar com o setor e registrar o que faz hoje.</div>';
     } else {
-      h += '<div class="blk"><h3>O que faz hoje</h3>' + li(s.faz) + '</div>';
-      if (s.fora && s.fora.length) {
-        h += '<div class="blk"><h3>O que parece fora do lugar</h3><ul class="out">' + s.fora.map(function (f) { return '<li><b>' + f.t + '</b>' + f.m + '</li>'; }).join('') + '</ul></div>';
-      }
-      h += '<div class="blk"><h3>Pontos de atenção</h3><div class="att">' + s.atencao.map(function (a) {
-        return '<div><div class="top"><b>' + a.t + '</b><span class="pill p-' + a.g + '">Gravidade ' + (a.g === 'alta' ? 'alta' : 'média') + '</span></div><p>' + a.d + '</p></div>';
-      }).join('') + '</div>' + (s.mais ? '<p class="more">' + s.mais + '</p>' : '') + '</div>';
-      h += '<div class="blk"><h3>Como deveria ser</h3>' + li(s.deveria) + '</div>';
-      if (s.aberto && s.aberto.length) h += '<div class="blk"><h3>Em aberto</h3><div class="open">' + li(s.aberto) + '</div></div>';
-      h += '<div class="blk"><details class="val"><summary>O que validar</summary>' + li(s.validar) + '</details></div>';
+      var tabs = [['geral', 'Visão geral'], ['colab', 'Colaboradores'], ['obs', 'Observações']];
+      h += '<div class="tabs" role="tablist">' + tabs.map(function (tb) {
+        return '<button type="button" role="tab" data-tab="' + tb[0] + '" aria-selected="' + (state.tab === tb[0]) + '">' + tb[1] + '</button>';
+      }).join('') + '</div>';
+      h += state.tab === 'colab' ? tabColab(s) : (state.tab === 'obs' ? tabObs(s) : tabGeral(s));
       h += '<div class="f-foot">' + ST[s.status] + ' de ' + s.date + '. Gravidades são estimativas e dependem de confirmação com a operação.</div>';
     }
     $('ficha').innerHTML = h;
@@ -358,7 +469,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   }
 
   function select(id, fromPin) {
-    state.sel = id;
+    state.sel = id; state.tab = 'geral';
     renderPins(); renderList(); renderFicha();
     setTimeout(centerOnSel, 280);
     var fr = $('ficha').getBoundingClientRect();
@@ -381,6 +492,10 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     if (pin) { select(pin.getAttribute('data-id'), true); return; }
     var it = e.target.closest('.item');
     if (it) { select(it.getAttribute('data-id'), false); return; }
+    var tb = e.target.closest('.tabs button');
+    if (tb) { state.tab = tb.getAttribute('data-tab'); renderFicha(); return; }
+    var nb = e.target.closest('#namesBtn');
+    if (nb) { state.names = !state.names; nb.setAttribute('aria-pressed', String(state.names)); nb.textContent = 'Nomes dos colaboradores: ' + (state.names ? 'visíveis' : 'ocultos'); renderFicha(); return; }
     var fl = e.target.closest('#filters button');
     if (fl) { state.filter = fl.getAttribute('data-filter'); renderHeader(); renderPins(); renderList(); return; }
     var zb = e.target.closest('.zoom button');
