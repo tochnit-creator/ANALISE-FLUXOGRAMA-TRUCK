@@ -174,11 +174,14 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
 .pfig { margin: 4px 0 10px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .big { font-size: 30px; font-weight: 300; line-height: 1.1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .of { font-size: 13.5px; font-weight: 400; color: var(--ink-2); }
-.track { display: flex; height: 5px; border-radius: 999px; overflow: hidden; background: var(--line); }
+.track { display: flex; height: 5px; border-radius: 999px; overflow: hidden; background: var(--line); box-shadow: 0 0 0 1px rgba(var(--glow, 229, 72, 77), .32), 0 0 10px rgba(var(--glow, 229, 72, 77), .24); }
+#colabTrack { --glow: 229, 72, 77; }
+#secTrack { --glow: 243, 193, 78; }
+#secTrack[data-tone="green"] { --glow: 61, 180, 94; }
 .fill { position: relative; height: 100%; width: 0; overflow: hidden; transition: width 1.4s cubic-bezier(.2, .8, .2, 1); }
-.fill-red { background: linear-gradient(90deg, #B71C26, #E5484D); box-shadow: 0 0 8px rgba(229, 72, 77, .45); border-radius: 999px; }
-.fill-green { background: linear-gradient(90deg, #23863F, #3DB45E); box-shadow: 0 0 8px rgba(61, 180, 94, .4); }
-.fill-amber { background: linear-gradient(90deg, #DDA000, #F3C14E); box-shadow: 0 0 8px rgba(243, 193, 78, .4); }
+.fill-red { background: linear-gradient(90deg, #B71C26, #E5484D); box-shadow: 0 0 8px rgba(229, 72, 77, .45), inset 0 1px 0 rgba(255, 255, 255, .3); border-radius: 999px; }
+.fill-green { background: linear-gradient(90deg, #23863F, #3DB45E); box-shadow: 0 0 8px rgba(61, 180, 94, .4), inset 0 1px 0 rgba(255, 255, 255, .3); }
+.fill-amber { background: linear-gradient(90deg, #DDA000, #F3C14E); box-shadow: 0 0 8px rgba(243, 193, 78, .4), inset 0 1px 0 rgba(255, 255, 255, .3); }
 .fill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .42) 50%, transparent 70%); transform: translateX(-100%); animation: shine 3.6s ease-in-out infinite; }
 @keyframes shine { 0% { transform: translateX(-100%); } 55%, 100% { transform: translateX(100%); } }
 .pnote { margin: 9px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
@@ -392,6 +395,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
     $('secTrack').setAttribute('aria-valuenow', String(sp));
     $('secBig').textContent = lev;
     $('secOf').textContent = 'de ' + tot + ', com ' + val + ' validados';
+    $('secTrack').setAttribute('data-tone', (val > 0 && pre === 0) ? 'green' : 'amber');
     setBar($('secVal'), val / tot * 100);
     setBar($('secPre'), pre / tot * 100);
 
