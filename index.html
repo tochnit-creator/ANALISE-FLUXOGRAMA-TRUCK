@@ -146,6 +146,11 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
+.addendum { max-width: 78ch; margin: 18px 0 0; padding: 14px 18px; background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--red); border-radius: 10px; }
+.addendum h2 { font-family: var(--cond); font-size: 19px; line-height: 1.2; margin: 0 0 6px; }
+.addendum p { margin: 0; color: var(--ink-2); }
+.addendum p + p { margin-top: 8px; }
+.addendum strong { color: var(--ink); font-weight: 600; }
 .chip.toggle { font: inherit; font-size: 13.5px; cursor: pointer; }
 .chip.toggle[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 16px 0 0; overflow-x: auto; }
@@ -213,6 +218,11 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
   <div class="hero">
     <h1>Levantamento de processos por setor</h1>
     <p class="lead">Este painel reúne o que já foi observado em cada setor, o que ainda precisa ser confirmado com as equipes e as decisões em aberto. O levantamento está em andamento: setores sem informação aparecem como "A levantar".</p>
+    <aside class="addendum" aria-labelledby="addTitle">
+      <h2 id="addTitle">Adendo: a estética é a primeira venda da empresa</h2>
+      <p>Antes do produto, vende-se a aparência. Nunca teremos uma segunda chance de causar uma boa primeira impressão, e é na entrada que o cliente forma a sua.</p>
+      <p><strong>Pintar a guarita e o prédio é prioridade.</strong> No mínimo, a guarita e a sala do Comercial.</p>
+    </aside>
     <div class="chips">
       <span class="chip">Atualizado em 02/10/2026</span>
       <span class="chip warn">Conteúdo preliminar, ainda não validado com as equipes</span>
@@ -298,11 +308,12 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       atencao: [
         { t: 'Fila e atenção dividida na entrada', g: 'alta', d: 'O checklist pelo aplicativo toma tempo. Enquanto ele é feito, quem chega espera e o controle de acesso perde atenção.' },
         { t: 'OS aberta sem critério técnico', g: 'alta', d: 'Escopo incompleto e correções depois, com reflexo em faturamento e produtividade.' },
-        { t: 'Sem câmeras na guarita e na entrada', g: 'alta', d: 'Observado em campo. Sem imagens, fica mais difícil acompanhar acidentes, disputas e outras ocorrências na entrada.' }
+        { t: 'Sem câmeras na guarita e na entrada', g: 'alta', d: 'Observado em campo. Sem imagens, fica mais difícil acompanhar acidentes, disputas e outras ocorrências na entrada.' },
+        { t: 'Portaria vazia no horário de almoço', g: 'alta', d: 'Quando o colaborador do controle de acesso sai para almoçar, a portaria fica sem ninguém e a entrada deixa de ser controlada.' }
       ],
       mais: 'Também a verificar: retrabalho no atendimento, responsabilidade misturada, dependência de turno e onde ficam guardadas as fotos e os documentos dos motoristas.',
-      deveria: ['Portaria fica com o controle de acesso: placa, motorista, horário e motivo', 'Libera ou barra a entrada e avisa o atendimento (sugestão)', 'Checklist de entrada e abertura da OS passam para um auxiliar administrativo na sala do Comercial (proposta do analista, a validar)', 'Câmeras na guarita e na entrada para reforçar o monitoramento (sugestão)'],
-      aberto: ['Validar a proposta de auxiliar administrativo na sala do Comercial para o checklist e a OS', 'Avaliar câmeras na guarita e na entrada'],
+      deveria: ['Portaria fica com o controle de acesso: placa, motorista, horário e motivo', 'Libera ou barra a entrada e avisa o atendimento (sugestão)', 'Checklist de entrada e abertura da OS passam para um auxiliar administrativo na sala do Comercial (proposta do analista, a validar)', 'Câmeras na guarita e na entrada para reforçar o monitoramento (sugestão)', 'Adendo: o auxiliar que apoiaria o Pit stop também cobre o controlador de acesso durante o almoço, e a portaria não fica mais vazia. Ganho sem contratar mais ninguém (proposta, a validar)'],
+      aberto: ['Validar a proposta de auxiliar administrativo na sala do Comercial para o checklist e a OS', 'Avaliar câmeras na guarita e na entrada', 'Validar o auxiliar do Pit stop como cobertura do controle de acesso no almoço (horário, treino e quem libera a entrada)'],
       validar: ['Por que a Portaria faz isso hoje? Falta de gente em algum horário ou hábito antigo?', 'É um colaborador por turno ou um no total? Qual o horário de funcionamento da Portaria?', 'O atendimento está presente em quais horários?', 'Quanto tempo leva o checklist pelo aplicativo e quantos caminhões chegam por dia?', 'Quanto tempo o caminhão espera na entrada, em média?', 'Quantas OS voltam corrigidas pelo atendimento?', 'Há câmeras em outros pontos da empresa? Onde ficam as fotos e os documentos do motorista e quem tem acesso?']
     },
     { id: 'comercial', n: 2, name: 'Comercial', group: 'Frente', status: 'pre', date: '02/10/2026', colab: { n: 3, nota: '{fabi}, {julio} e {tati}' },
