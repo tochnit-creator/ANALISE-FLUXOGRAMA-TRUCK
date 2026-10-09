@@ -315,7 +315,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       ],
       mais: 'Também a verificar: retrabalho no atendimento, responsabilidade misturada, dependência de uma só pessoa no horário das 08h às 18h e onde ficam guardadas as fotos e os documentos dos motoristas.',
       deveria: ['Portaria fica com o controle de acesso: placa, motorista, horário e motivo', 'Libera ou barra a entrada e avisa o atendimento (sugestão)', 'Checklist de entrada e abertura da OS passam para um auxiliar administrativo na sala do Comercial (proposta do analista, a validar)', 'Câmeras na guarita e na entrada para reforçar o monitoramento (sugestão)', 'Proibir que colaboradores façam o horário de almoço na portaria/guarita (proposta)'],
-      aberto: ['Validar a proposta de auxiliar administrativo na sala do Comercial para o checklist e a OS', 'Avaliar câmeras na guarita e na entrada'],
+      aberto: ['Definir um responsável próprio para a Portaria (hoje sob {tati})', 'Validar a proposta de auxiliar administrativo na sala do Comercial para o checklist e a OS', 'Avaliar câmeras na guarita e na entrada'],
       validar: ['Por que a Portaria faz isso hoje? Falta de gente em algum horário ou hábito antigo?', 'A Portaria funciona das 08h às 18h. Quem cobre no almoço, nas folgas e fora desse horário? (Hoje a supervisão é {tati}, do Comercial.)', 'O atendimento está presente em quais horários?', 'Quanto tempo leva o checklist pelo aplicativo e quantos caminhões chegam por dia?', 'Quanto tempo o caminhão espera na entrada, em média?', 'Quantas OS voltam corrigidas pelo atendimento?', 'Há câmeras em outros pontos da empresa? Onde ficam as fotos e os documentos do motorista e quem tem acesso?']
     },
     { id: 'comercial', n: 2, name: 'Comercial', group: 'Frente', status: 'pre', date: '02/10/2026', colab: { n: 3, nota: '{fabi}, {julio} e {tati}' },
@@ -330,7 +330,7 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
         { t: 'Cliente entra em contato ou chega', q: '{fabi} atende' },
         { t: 'Diagnóstico informado ao cliente', q: '{fabi}' },
         { t: 'Cliente quer fechar ou negociar', q: '{fabi} repassa' },
-        { t: 'Negociação e fechamento', q: '{julio} assume (motivo a entender)' },
+        { t: 'Negociação e fechamento', q: '{julio} assume; acima de R$ 5 mil, {tati}' },
         { t: 'Acompanhamento de OS parada, peça e faturamento', q: '{julio} cobra e atualiza o status' }
       ],
       pessoas: [
@@ -352,9 +352,16 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
                 'Pontos em aberto: se a negociação é mesmo dele (ver ponto do Comercial), o papel do Elenildo e como o marketing usa a planilha.',
                 'Observação inicial do analista: perde o equilíbrio emocional com facilidade e o atendimento fica oscilante. A validar com {tati}.',
                 'Observações sobre o processo, não uma avaliação da pessoa.'] },
-        { key: 'tati', funcao: 'Supervisão', resp: 'a confirmar', nivel: 'detalhar',
-          faz: ['Supervisora do setor Comercial (a detalhar)'],
-          obs: ['{fabi} responde a ela.', 'Análise individual será feita depois.'] }
+        { key: 'tati', funcao: 'Supervisão do Comercial e relacionamento com clientes', resp: 'a confirmar', nivel: 'ok',
+          faz: ['Negocia com os clientes acima de R$ 5 mil',
+                'Dá suporte para {julio} e {fabi}',
+                'Faz hoje a gestão de Mauá e SBC (a confirmar o que cobre)',
+                'É hoje a referência do Pit stop e da Portaria, que precisam de um responsável próprio'],
+          obs: ['Ponto forte observado: prospecção, relacionamento com o cliente e captação de novas oportunidades.',
+                'Perfil mais comercial do que de operação e execução. Colocá-la dentro dos processos do dia a dia pode ser uma falha, porque tira tempo do que ela faz de melhor.',
+                'Proposta: definir um responsável para o Pit stop e outro para a Portaria, liberando {tati} para trazer clientes e novas oportunidades para a empresa (a validar com o dono).',
+                'Falta confirmar a quem ela responde.',
+                'Observações sobre o processo, não uma avaliação da pessoa.'] }
       ],
       fora: [
         { t: 'Acompanhamento de carros parados e pendências do dia', m: 'Hoje depende de planilhas manuais e de perguntas sobre o status das OS. Proposta: painel de pendências do dia, com carros parados e demais tarefas, alimentado pelos dados da OS (a validar).' },
@@ -364,16 +371,18 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
         { t: 'Planilha sem padrão e sem tempo parado', g: 'alta', d: 'Os blocos têm colunas diferentes, a coluna de status traz ora a etapa, ora o nome de quem avalia, e não há cálculo de há quantos dias cada item está parado. Os totais dependem de linhas reservadas à mão.' },
         { t: 'Orçamentos antigos sem desfecho visível', g: 'alta', d: 'Na planilha de 02/10 há um orçamento em negociação com mais de 60 dias e outros itens aguardando aprovação ou avaliação há 15 a 24 dias. A confirmar se as datas são as do orçamento e se os itens ainda estão ativos.' },
         { t: 'Marketing: setor ainda não mapeado', g: 'media', d: '{julio} preenche uma planilha para o marketing, mas esse setor não está no mapa e ainda não sabemos quem é, onde fica e o que faz com a informação. Observação registrada no Comercial até entendermos se o marketing é um 15º setor, uma pessoa ou uma função de outra área.' },
+        { t: 'Supervisão acumulada com a operação', g: 'alta', d: '{tati} negocia acima de R$ 5 mil, apoia {julio} e {fabi}, faz a gestão de Mauá e SBC e é a referência do Pit stop e da Portaria. Sobra pouco tempo para prospectar clientes, que é o ponto forte dela. Hipótese a validar: parte dessa carga pode ir para responsáveis definidos.' },
         { t: 'Sem prazo para o cliente aprovar o orçamento', g: 'alta', d: 'A equipe do Comercial não soube dizer em quantos dias o cliente precisa aprovar ou reprovar depois de receber o orçamento. Enquanto isso, o caminhão ocupa o pátio sem pagar diária e a empresa perde espaço (m²) a cada dia.' },
         { t: 'Atendimento oscilante', g: 'media', d: 'Observação inicial do analista: {julio} perde o equilíbrio emocional com facilidade, o que deixa o atendimento oscilante. A validar com {tati}. Hipótese: pode ter relação com o excesso de tarefas manuais e de cobranças sobre o status das OS.' },
         { t: 'Atraso de peça sem cobrança clara', g: 'alta', d: 'O atraso passa por {julio}, depois por Elenildo e daí chega a Compras, mas não há um ponto único em que todos vejam o atraso nem um responsável definido por cobrar Compras.' },
         { t: 'Trabalho manual e informação espalhada', g: 'media', d: 'Planilhas preenchidas à mão, status perguntado de pessoa em pessoa, observações de clientes em arquivo Word e uma planilha enviada ao marketing. Difícil para a diretoria enxergar e fácil de perder informação.' },
-        { t: 'Negociação fica fora do atendimento', g: 'media', d: 'Quem atende e passa o diagnóstico ({fabi}) repassa a negociação para {julio}. O motivo ainda não foi entendido. Hipótese: não poder negociar pode limitar {fabi} e a operação.' }
+        { t: 'Negociação fica fora do atendimento', g: 'media', d: 'Quem atende e passa o diagnóstico ({fabi}) repassa a negociação para {julio}. O motivo ainda não foi entendido. Informação nova: acima de R$ 5 mil quem negocia é {tati}. Falta definir a alçada (limite de valor) para {julio} e para {fabi}. Hipótese: não poder negociar pode limitar {fabi} e a operação.' }
       ],
       mais: 'Também a verificar: a carga de trabalho do atendimento (volume ainda não medido) e a falta de um apoio na sala do Comercial.',
       deveria: [
         'Padronizar a planilha (mesmas colunas e uma coluna de etapa com lista fixa) e levá-la para o painel, com o tempo parado calculado sozinho',
         'Entender e, se fizer sentido, definir uma alçada de negociação para o atendimento, com escalonamento por valor (sugestão)',
+        'Liberar {tati} da operação: definir um responsável para o Pit stop e outro para a Portaria (um por setor ou um para os dois, a decidir), para que ela foque em prospecção, relacionamento e novas oportunidades (sugestão)',
         'Sugestão comercial: um agente (assistente automático) no WhatsApp comercial, que atende clientes e envia mensagens a toda a base com promoções, descontos, cashback e outras ações, sem depender de uma pessoa para cada contato. Cuidados a validar: consentimento do cliente para receber mensagens (LGPD), uso do WhatsApp Business oficial para evitar bloqueio do número, regras claras de desconto e cashback definidas pelo dono, e passagem para uma pessoa quando houver negociação ou dúvida (sugestão)',
         'Definir o prazo para o cliente aprovar ou reprovar o orçamento e usar a mesma dinâmica visual de prazos proposta no Pit stop, incluindo a política de diária de pátio (decisão do dono)',
         'Painel de pendências do dia para {julio}: carros parados, orçamentos em negociação, OS a faturar e atrasos de peça, com responsável por cobrar Compras (sugestão)',
@@ -381,8 +390,8 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
         'Auxiliar administrativo na sala do Comercial para abrir OS e fazer o checklist de entrada, tirando essa função da Portaria',
         'Esse auxiliar também apoia {fabi}, {julio} e o Pit stop, e serve de backup para ausências e gargalos futuros (a validar)'
       ],
-      aberto: ['Entender por que a negociação fica com {julio} e não com {fabi} (levar para {tati} ou para o dono)', 'Medir o volume de atendimentos por dia', 'Confirmar para quem é a planilha e com que frequência é atualizada', 'Validar a proposta de auxiliar administrativo (perfil, quantidade e custo)', 'Definir o prazo de aprovação do orçamento e a política de diária de pátio com o dono', 'Avaliar a sugestão do agente de WhatsApp comercial: quais promoções, descontos e cashback o dono aprova, qual ferramenta e quanto custa', 'Fazer a análise individual da supervisão ({tati})', 'Definir quem cobra o setor de Compras quando uma peça atrasa', 'Entender o marketing: onde ele fica no organograma, quem é responsável e o que faz com a planilha preenchida por {julio}'],
-      validar: ['Por que o fechamento fica com {julio}? Política de margem, alçada ou hábito?', 'Quanto tempo o cliente espera entre o diagnóstico e o retorno de quem negocia?', 'A planilha é atualizada quantas vezes ao dia? Quem a usa: a supervisão, o dono? O nome do arquivo sugere {tati}.', 'O que significa "valetando" na coluna de status? É quem está avaliando o veículo na valeta?', 'Os itens mais antigos ainda estão ativos? A data é a do orçamento?', 'Os clientes já autorizaram receber mensagens da empresa? Existe uma lista de contatos organizada?', 'Quantos dias, em média, o caminhão fica no pátio depois do envio do orçamento?', 'Qual o cargo e o setor do Elenildo, e o que ele faz com o status dos carros parados enviado por {julio}?', 'O que significa "não é comigo" na planilha de carros parados e quem é o dono dessas pendências?', 'O que é a coluna DIF e como é calculada?', 'Qual a finalidade da planilha do marketing e quem a usa?', 'Quantas observações de clientes (SAC) {julio} registra por semana e que tipos de problema aparecem?']
+      aberto: ['Entender por que a negociação fica com {julio} e não com {fabi} (levar para {tati} ou para o dono)', 'Medir o volume de atendimentos por dia', 'Confirmar para quem é a planilha e com que frequência é atualizada', 'Validar a proposta de auxiliar administrativo (perfil, quantidade e custo)', 'Definir o prazo de aprovação do orçamento e a política de diária de pátio com o dono', 'Definir os responsáveis pelo Pit stop e pela Portaria, hoje sob {tati}', 'Confirmar o que significa a gestão de Mauá e SBC e a que {tati} responde', 'Avaliar a sugestão do agente de WhatsApp comercial: quais promoções, descontos e cashback o dono aprova, qual ferramenta e quanto custa', 'Fazer a análise individual da supervisão ({tati})', 'Definir quem cobra o setor de Compras quando uma peça atrasa', 'Entender o marketing: onde ele fica no organograma, quem é responsável e o que faz com a planilha preenchida por {julio}'],
+      validar: ['Por que o fechamento fica com {julio}? Política de margem, alçada ou hábito?', 'Quanto tempo o cliente espera entre o diagnóstico e o retorno de quem negocia?', 'A planilha é atualizada quantas vezes ao dia? Quem a usa: a supervisão, o dono? O nome do arquivo sugere {tati}.', 'O que significa "valetando" na coluna de status? É quem está avaliando o veículo na valeta?', 'Os itens mais antigos ainda estão ativos? A data é a do orçamento?', 'A regra de R$ 5 mil é formal? Qual a alçada para {julio} e para {fabi}?', 'Os clientes já autorizaram receber mensagens da empresa? Existe uma lista de contatos organizada?', 'Quantos dias, em média, o caminhão fica no pátio depois do envio do orçamento?', 'Qual o cargo e o setor do Elenildo, e o que ele faz com o status dos carros parados enviado por {julio}?', 'O que significa "não é comigo" na planilha de carros parados e quem é o dono dessas pendências?', 'O que é a coluna DIF e como é calculada?', 'Qual a finalidade da planilha do marketing e quem a usa?', 'Quantas observações de clientes (SAC) {julio} registra por semana e que tipos de problema aparecem?']
     },
     { id: 'pitstop', n: 3, name: 'Pit stop', group: 'Frente', status: 'validado', date: '06/10/2026', colab: { n: 2, nota: '{gui1} e {gui2}' },
       faz: [
@@ -404,15 +413,16 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       pessoas: [
         { key: 'gui1', funcao: 'Mecânico do Pit stop (parte mecânica)', resp: '{aloiso}', nivel: 'ok',
           faz: ['Valetamento, troca de óleo e filtro, reparos e conexões', 'Dá o diagnóstico e passa ao Comercial valores e o que precisa ser feito', 'Monta o orçamento com peças e horas', 'Passa para Compras o que precisa ser comprado', 'Faz testes nos veículos e manobra caminhões no pátio de baixo', 'Serviço pesado vai para {zul} e {aloiso}'],
-          obs: ['Gestor imediato: {aloiso}, do pátio mecânico.', 'Faz o mesmo que {gui2}, só que na parte mecânica.', 'Hoje controla pela OS impressa e pela ordem de compra em papel. Se o papel se perde, perde o controle.', 'Precisa de um painel com o status do orçamento (aprovado ou não, aguardando peça) e dos veículos sob sua responsabilidade.', 'Observações sobre o processo, não uma avaliação da pessoa.'] },
-        { key: 'gui2', funcao: 'Eletricista do Pit stop', resp: '{tati}', nivel: 'ok',
+          obs: ['Gestor imediato: {aloiso}, do pátio mecânico, que às vezes o puxa para executar serviço na mecânica, tirando-o do Pit stop.', 'Faz o mesmo que {gui2}, só que na parte mecânica.', 'Hoje controla pela OS impressa e pela ordem de compra em papel. Se o papel se perde, perde o controle.', 'Precisa de um painel com o status do orçamento (aprovado ou não, aguardando peça) e dos veículos sob sua responsabilidade.', 'Observações sobre o processo, não uma avaliação da pessoa.'] },
+        { key: 'gui2', funcao: 'Eletricista do Pit stop', resp: 'ninguém (sem responsável definido)', nivel: 'ok',
           faz: ['Faz exatamente o que o mecânico faz, só que na parte elétrica: valetamento, diagnóstico, reparos e conexões', 'Passa ao Comercial valores e o que precisa ser trocado ou feito', 'Monta o orçamento da parte elétrica, com peças e horas', 'Passa para Compras o que precisa ser comprado', 'Faz testes nos veículos e manobra caminhões no pátio de baixo'],
-          obs: ['Supervisão: {tati}, do Comercial.', 'Mesma necessidade de painel de status do orçamento e dos veículos sob sua responsabilidade.', 'Observações sobre o processo, não uma avaliação da pessoa.'] }
+          obs: ['Não tem a quem responder: trabalha de forma autônoma, sem um responsável definido.', 'Mesma necessidade de painel de status do orçamento e dos veículos sob sua responsabilidade.', 'Observações sobre o processo, não uma avaliação da pessoa.'] }
       ],
       fora: [
         { t: 'Controle da OS e da compra em papel', m: 'O acompanhamento depende da OS impressa e da ordem de compra. Se o papel se perde, o controle acaba. Proposta: painel visível para o Pit stop com os veículos sob sua supervisão e o status de cada orçamento (a validar).' }
       ],
       atencao: [
+        { t: 'Pit stop sem dono', g: 'alta', d: 'O Pit stop não tem um responsável próprio. {gui2} não responde a ninguém e {gui1} responde ao pátio mecânico ({aloiso}), que às vezes o puxa para executar serviço na mecânica. Sem dono, ninguém cobra prazos, acompanha as OS paradas nem organiza a equipe.' },
         { t: 'Cobrança constante ao Almoxarifado sobre prazo de peças', g: 'alta', d: 'Observado: a equipe do Pit stop cobra o Almoxarifado com frequência sobre os prazos das peças, porque não há onde ver a previsão de chegada. A cobrança toma tempo dos dois lados e não resolve a falta de visibilidade.' },
         { t: 'Ninguém acompanha a chegada das peças', g: 'alta', d: 'Depois que a compra sai das mãos do mecânico, Pit stop e Comercial ficam sem ver o andamento. Não está claro quem controla a chegada dos pedidos e quem avisa que está atrasado.' },
         { t: 'Controle depende de papel', g: 'alta', d: 'OS impressa e ordem de compra são o único controle do Pit stop. Perdeu o papel, perdeu a informação. Há também recados escritos à mão nas próprias folhas.' },
@@ -422,11 +432,12 @@ footer { padding: 26px 0 60px; color: var(--ink-2); font-size: 14px; max-width: 
       deveria: [
         'Painel diário do Pit stop: veículos sob sua supervisão, status do orçamento (aguardando aprovação, aprovado, aguardando peça) e o que está parado (sugestão)',
         'Acompanhamento da chegada das peças visível para Pit stop, Comercial e diretoria, com alguém definido para cobrar Compras em caso de atraso (a definir)',
+        'Dar um dono ao Pit stop: um responsável que organize a equipe, acompanhe as OS e os prazos e responda por ele (a definir com o dono)',
         'Dinâmica visual de prazos, com semáforo, para orçamento aprovado e para chegada de peças (ver proposta abaixo, prazos a definir)',
         'Passagem clara para o trem de força quando o serviço for pesado, com registro de quando e para quem foi passado (sugestão)'
       ],
-      aberto: ['Definir os prazos da dinâmica visual (aprovação do orçamento e chegada de peças) e quem os cobra', 'Entender como Almoxarifado e Compras dividem a responsabilidade pelo prazo das peças', 'Definir quem acompanha a chegada das peças e cobra Compras', 'Entender como é decidido que um serviço é pesado e vai para o trem de força', 'Levantar o setor de trem de força ({zul} e {aloiso}), que ainda não está no mapa como setor próprio'],
-      validar: ['Quantos veículos passam pelo Pit stop por dia?', 'Por que {gui1} responde ao gestor do pátio mecânico e {gui2} à supervisão do Comercial? Faz sentido manter assim?', 'Quanto tempo leva do diagnóstico até o orçamento sair?', 'Quem avisa o Pit stop quando o cliente aprova ou recusa o orçamento?', 'Onde fica o trem de força no mapa e a quem {zul} e {aloiso} respondem?', 'Quantas OS ficam paradas esperando peça e por quanto tempo?'],
+      aberto: ['Definir o dono do Pit stop (hoje {gui2} não responde a ninguém e {gui1} responde ao pátio mecânico ({aloiso}))', 'Definir os prazos da dinâmica visual (aprovação do orçamento e chegada de peças) e quem os cobra', 'Entender como Almoxarifado e Compras dividem a responsabilidade pelo prazo das peças', 'Definir quem acompanha a chegada das peças e cobra Compras', 'Entender como é decidido que um serviço é pesado e vai para o trem de força', 'Levantar o setor de trem de força ({zul} e {aloiso}), que ainda não está no mapa como setor próprio'],
+      validar: ['Quantos veículos passam pelo Pit stop por dia?', 'Faz sentido {gui1} responder ao gestor do pátio mecânico e ser chamado para a mecânica, enquanto {gui2} não responde a ninguém? Quem deve ser o dono do Pit stop?', 'Quanto tempo leva do diagnóstico até o orçamento sair?', 'Quem avisa o Pit stop quando o cliente aprova ou recusa o orçamento?', 'Onde fica o trem de força no mapa e a quem {zul} e {aloiso} respondem?', 'Quantas OS ficam paradas esperando peça e por quanto tempo?'],
       prazos: {
         titulo: 'Dinâmica de prazos (proposta visual, prazos a definir)',
         etapas: [
